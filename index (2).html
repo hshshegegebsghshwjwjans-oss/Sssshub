@@ -1,0 +1,374 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ssss hub</title>
+    <!-- Fontes exclusivas e limpas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:ital,wght@1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #d1d1d1;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* TELA DE FORA DO HUB (INTRO) - AGORA EM MODO CURSOR POINTER */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://i.ibb.co/k2Nb7m06/download-bin-1.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer; /* Mostra que a tela inteira é clicável */
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .intro-pic {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: #000000;
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            margin-bottom: 4px;
+            pointer-events: none; /* Deixa o clique passar para o fundo */
+        }
+
+        .enter-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            font-style: italic;
+            padding: 14px 36px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.03);
+            pointer-events: none; /* Evita conflito de cliques repetidos */
+        }
+
+        #intro-overlay:hover .enter-btn {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .tap-hint-outside {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+            margin-top: 4px;
+            pointer-events: none;
+        }
+
+        /* VÍDEO DE FUNDO DENTRO DO HUB */
+        .bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: contain;
+            background-color: #000000;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: -1;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* HEADER DENTRO DO HUB */
+        header {
+            text-align: center;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .profile-pic {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 1px solid #1c1c1c;
+            background-color: #000000;
+            margin: 0 auto 20px auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        header h1 {
+            font-family: 'Cinzel', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 2.4rem;
+            color: #ffffff;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .subtitle {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            color: #888;
+            text-transform: uppercase;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.8);
+        }
+
+        /* CARDS */
+        .box {
+            background: rgba(12, 12, 12, 0.75);
+            border: 1px solid rgba(35, 35, 35, 0.5);
+            border-radius: 16px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+        }
+
+        .box-title {
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .box-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .quote {
+            font-family: 'Cinzel', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .tags-container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #aaa;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        /* SEÇÃO LINKS */
+        .links-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .link-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .link-row:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .link-row:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            padding-left: 4px;
+        }
+
+        .link-name {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #ffffff;
+            word-break: break-all;
+        }
+
+        .link-handle {
+            font-size: 0.8rem;
+            color: #888;
+            margin-left: auto;
+            margin-right: 15px;
+            white-space: nowrap;
+        }
+
+        .arrow {
+            color: #888;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+        }
+
+        .link-row:hover .arrow {
+            color: #ffffff;
+        }
+
+        /* BOTÃO DE CONTROLE DE ÁUDIO INVISÍVEL */
+        .audio-control {
+            background: transparent;
+            border: none;
+            color: transparent;
+            padding: 12px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            outline: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE FORA DO HUB (AGORA COM ADICIONADO ONCLICK NA DIV INTEIRA) -->
+    <div id="intro-overlay" onclick="startHub()">
+        <img src="https://i.ibb.co/k2Nb7m06/download-bin-1.jpg" alt="Avatar Intro" class="intro-pic">
+        <button class="enter-btn">SSSS HUB</button>
+        <div class="tap-hint-outside">toque aqui</div>
+    </div>
+
+    <!-- VÍDEO DO CATBOX -->
+    <video loop muted playsinline preload="auto" id="myVideo" class="bg-video">
+        <source src="https://files.catbox.moe/xo7v09.mp4" type="video/mp4">
+    </video>
+    <div class="bg-overlay"></div>
+
+    <!-- DENTRO DO HUB -->
+    <div class="main-container" id="mainContent">
+        
+        <!-- HEADER -->
+        <header>
+            <img src="https://i.ibb.co/k2Nb7m06/download-bin-1.jpg" alt="Avatar" class="profile-pic">
+            <h1>ssss hub</h1>
+            <div class="subtitle">Brasil • Private Space</div>
+        </header>
+
+        <!-- SEÇÃO SOBRE -->
+        <div class="box">
+            <div class="box-title">Sobre</div>
+            <p class="quote">"My Perfect Face"</p>
+            <div class="tags-container">
+                <span class="tag">Lua</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">Python</span>
+                <span class="tag">C++</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">Go</span>
+                <span class="tag">Java</span>
+                <span class="tag">Rust</span>
+                <span class="tag">C#</span>
+            </div>
+        </div>
+
+        <!-- SEÇÃO LINKS -->
+        <div class="box">
+            <div class="box-title">Links</div>
+            
+            <div class="links-list">
+                <a href="https://discord.com/invite/mnzs" class="link-row">
+                    <span class="link-name">Menezes Hub</span>
+                    <span class="link-handle">Entrar</span>
+                    <span class="arrow">↗</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- O BOTÃO DE AUDIO INVISÍVEL -->
+        <button onclick="toggleAudio()" id="audioBtn" class="audio-control"></button>
+
+    </div>
+
+    <script>
+        function startHub() {
+            var video = document.getElementById("myVideo");
+            var intro = document.getElementById("intro-overlay");
+            var content = document.getElementById("mainContent");
+
+            video.muted = false;
+            video.play();
+
+            intro.style.opacity = "0";
+            intro.style.visibility = "hidden";
+
+            content.style.opacity = "1";
+            document.body.style.overflow = "auto";
+        }
+
+        function toggleAudio() {
+            var video = document.getElementById("myVideo");
+            if (video.muted) {
+                video.muted = false;
+            } else {
+                video.muted = true;
+            }
+        }
+    </script>
+
+</body>
+</html>
